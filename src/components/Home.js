@@ -15,61 +15,8 @@ AOS.init({
   easing: 'ease-out',
 });
 
-const API = "AIzaSyBH3S2BoDSqAQt2LSbic_GTifvQn8qgqDQ";
-const channelId = "UC9H4onmkThYbMHrce2PceQg";
-
-const fetchurl = `https://www.googleapis.com/youtube/v3/search?key=${API}&channelId=${channelId}&part=snippet,id&order=date&maxResults=43`;
 
 const Home = () => {
-  const [allvideos, setAllvideos] = useState([]);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  function handleFlip() {
-    if (!isAnimating) {
-      setIsFlipped(!isFlipped);
-      setIsAnimating(true);
-    }
-  }
-
-  useEffect(() => {
-    fetch(fetchurl)
-      .then(response => response.json())
-      .then(responseJson => {
-        const result = responseJson.items.map(doc => ({
-          ...doc,
-          Videolink: "https://www.youtube.com/embed/" + doc.id.videoId,
-        }));
-        setAllvideos(result);
-      })
-      .catch(error => {
-        console.error("Error fetching YouTube videos:", error);
-      });
-
-    console.log(allvideos);
-
-    const $cardsWrapper = document.querySelector('#cards');
-    const $cards = document.querySelectorAll('.card');
-    const numCards = $cards.length;
-
-    $cards.forEach(($card, index0) => {
-      const index = index0 + 1;
-      const reverseIndex = numCards - index0;
-      const reverseIndex0 = numCards - index;
-
-      $card.style.paddingTop = `calc(${index} * var(--card-top-offset))`;
-
-      scroll(
-        animate($card, {
-          scale: [1, 1 - (0.1 * reverseIndex0)],
-        }), {
-          target: $cardsWrapper,
-          offset: [`${index0 / numCards * 100}%`, `${index / numCards * 100}%`],
-        }
-      );
-    });
-  }, [allvideos]);
-
   return (
     <div className="home-container">
      
